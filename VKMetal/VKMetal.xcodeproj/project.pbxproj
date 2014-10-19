@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3E4560A319F380C30013921F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560A219F380C30013921F /* AppDelegate.swift */; };
+		3E4560AC19F380C30013921F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E4560AB19F380C30013921F /* Images.xcassets */; };
+		3E4560AF19F380C30013921F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E4560AD19F380C30013921F /* LaunchScreen.xib */; };
+		3E4560BB19F380C30013921F /* VKMetalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560BA19F380C30013921F /* VKMetalTests.swift */; };
+		3E4560C619F381000013921F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C419F381000013921F /* MainViewController.swift */; };
+		3E4560C719F381000013921F /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C519F381000013921F /* Shader.metal */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3E4560B519F380C30013921F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E45609519F380C30013921F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3E45609C19F380C30013921F;
+			remoteInfo = VKMetal;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3E45609D19F380C30013921F /* VKMetal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VKMetal.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E4560A119F380C30013921F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E4560A219F380C30013921F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3E4560AB19F380C30013921F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3E4560AE19F380C30013921F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		3E4560B419F380C30013921F /* VKMetalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VKMetalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E4560B919F380C30013921F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3E4560BA19F380C30013921F /* VKMetalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKMetalTests.swift; sourceTree = "<group>"; };
+		3E4560C419F381000013921F /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3E4560C519F381000013921F /* Shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3E45609A19F380C30013921F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E4560B119F380C30013921F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3E45609419F380C30013921F = {
+			isa = PBXGroup;
+			children = (
+				3E45609F19F380C30013921F /* VKMetal */,
+				3E4560B719F380C30013921F /* VKMetalTests */,
+				3E45609E19F380C30013921F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3E45609E19F380C30013921F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E45609D19F380C30013921F /* VKMetal.app */,
+				3E4560B419F380C30013921F /* VKMetalTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3E45609F19F380C30013921F /* VKMetal */ = {
+			isa = PBXGroup;
+			children = (
+				3E4560A219F380C30013921F /* AppDelegate.swift */,
+				3E4560C419F381000013921F /* MainViewController.swift */,
+				3E4560C519F381000013921F /* Shader.metal */,
+				3E4560AB19F380C30013921F /* Images.xcassets */,
+				3E4560AD19F380C30013921F /* LaunchScreen.xib */,
+				3E4560A019F380C30013921F /* Supporting Files */,
+			);
+			path = VKMetal;
+			sourceTree = "<group>";
+		};
+		3E4560A019F380C30013921F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3E4560A119F380C30013921F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3E4560B719F380C30013921F /* VKMetalTests */ = {
+			isa = PBXGroup;
+			children = (
+				3E4560BA19F380C30013921F /* VKMetalTests.swift */,
+				3E4560B819F380C30013921F /* Supporting Files */,
+			);
+			path = VKMetalTests;
+			sourceTree = "<group>";
+		};
+		3E4560B819F380C30013921F /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3E4560B919F380C30013921F /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3E45609C19F380C30013921F /* VKMetal */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3E4560BE19F380C30013921F /* Build configuration list for PBXNativeTarget "VKMetal" */;
+			buildPhases = (
+				3E45609919F380C30013921F /* Sources */,
+				3E45609A19F380C30013921F /* Frameworks */,
+				3E45609B19F380C30013921F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VKMetal;
+			productName = VKMetal;
+			productReference = 3E45609D19F380C30013921F /* VKMetal.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3E4560B319F380C30013921F /* VKMetalTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3E4560C119F380C30013921F /* Build configuration list for PBXNativeTarget "VKMetalTests" */;
+			buildPhases = (
+				3E4560B019F380C30013921F /* Sources */,
+				3E4560B119F380C30013921F /* Frameworks */,
+				3E4560B219F380C30013921F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3E4560B619F380C30013921F /* PBXTargetDependency */,
+			);
+			name = VKMetalTests;
+			productName = VKMetalTests;
+			productReference = 3E4560B419F380C30013921F /* VKMetalTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3E45609519F380C30013921F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Vivian Keating";
+				TargetAttributes = {
+					3E45609C19F380C30013921F = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+					3E4560B319F380C30013921F = {
+						CreatedOnToolsVersion = 6.0.1;
+						TestTargetID = 3E45609C19F380C30013921F;
+					};
+				};
+			};
+			buildConfigurationList = 3E45609819F380C30013921F /* Build configuration list for PBXProject "VKMetal" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3E45609419F380C30013921F;
+			productRefGroup = 3E45609E19F380C30013921F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3E45609C19F380C30013921F /* VKMetal */,
+				3E4560B319F380C30013921F /* VKMetalTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3E45609B19F380C30013921F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E4560AF19F380C30013921F /* LaunchScreen.xib in Resources */,
+				3E4560AC19F380C30013921F /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E4560B219F380C30013921F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3E45609919F380C30013921F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E4560C719F381000013921F /* Shader.metal in Sources */,
+				3E4560A319F380C30013921F /* AppDelegate.swift in Sources */,
+				3E4560C619F381000013921F /* MainViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3E4560B019F380C30013921F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E4560BB19F380C30013921F /* VKMetalTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3E4560B619F380C30013921F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3E45609C19F380C30013921F /* VKMetal */;
+			targetProxy = 3E4560B519F380C30013921F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3E4560AD19F380C30013921F /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3E4560AE19F380C30013921F /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3E4560BC19F380C30013921F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3E4560BD19F380C30013921F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3E4560BF19F380C30013921F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = VKMetal/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3E4560C019F380C30013921F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = VKMetal/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3E4560C219F380C30013921F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = VKMetalTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VKMetal.app/VKMetal";
+			};
+			name = Debug;
+		};
+		3E4560C319F380C30013921F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = VKMetalTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VKMetal.app/VKMetal";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3E45609819F380C30013921F /* Build configuration list for PBXProject "VKMetal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E4560BC19F380C30013921F /* Debug */,
+				3E4560BD19F380C30013921F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3E4560BE19F380C30013921F /* Build configuration list for PBXNativeTarget "VKMetal" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E4560BF19F380C30013921F /* Debug */,
+				3E4560C019F380C30013921F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3E4560C119F380C30013921F /* Build configuration list for PBXNativeTarget "VKMetalTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3E4560C219F380C30013921F /* Debug */,
+				3E4560C319F380C30013921F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3E45609519F380C30013921F /* Project object */;
+}
