@@ -111,7 +111,7 @@ class MainViewController: UIViewController {
         let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
         pipelineStateDescriptor.vertexFunction = vertexProgram
         pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.colorAttachments.objectAtIndexedSubscript(0).pixelFormat = MTLPixelFormat.BGRA8Unorm
+        pipelineStateDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.BGRA8Unorm
         
         var pipelineError : NSError?
         pipelineState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error:&pipelineError)
@@ -127,13 +127,13 @@ class MainViewController: UIViewController {
             let drawable = unownedSelf.metalLayer.nextDrawable()
             
             let renderPassDescriptor = MTLRenderPassDescriptor()
-            renderPassDescriptor.colorAttachments.objectAtIndexedSubscript(0).texture = drawable.texture
-            renderPassDescriptor.colorAttachments.objectAtIndexedSubscript(0).loadAction = MTLLoadAction.Clear
-            renderPassDescriptor.colorAttachments.objectAtIndexedSubscript(0).clearColor = MTLClearColor(red: 0.0,
+            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+            renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.Clear
+            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0,
                 green: 0.0,
                 blue: 0.0,
                 alpha: 1.0)
-            renderPassDescriptor.colorAttachments.objectAtIndexedSubscript(0).storeAction = MTLStoreAction.Store
+            renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.Store
             
             dispatch_semaphore_wait(unownedSelf.avaliableUniformBuffers, DISPATCH_TIME_FOREVER)
             let commandBuffer = unownedSelf.commandQueue?.commandBuffer()
