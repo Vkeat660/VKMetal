@@ -19,20 +19,23 @@ class MainViewController: UIViewController {
     var colorBuffer         : MTLBuffer?
     var projectionBuffer    : MTLBuffer?
     
+    var currentDrawable : CAMetalDrawable?
+    
     var pipelineState : MTLRenderPipelineState?
     var commandQueue : MTLCommandQueue?
     
     var displayLink : CADisplayLink?
     var avaliableUniformBuffers: dispatch_semaphore_t?
+    
     let renderQueue = NSOperationQueue()
     
     let vertexData : [Float] = [ 0.0,  0.6, -4.0,
-        -0.6, -0.6, -4.0,
-        0.6, -0.6, -4.0]
+                                -0.6, -0.6, -4.0,
+                                 0.6, -0.6, -4.0]
     
     let colorData  : [Float] = [ 0.0, 0.0, 1.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        1.0, 0.0, 0.0, 1.0]
+                                 0.0, 1.0, 0.0, 1.0,
+                                 1.0, 0.0, 0.0, 1.0]
     
     var projectionData : [Float]?
     
@@ -120,41 +123,58 @@ class MainViewController: UIViewController {
         }
     }
     
+    func renderPassDescriptionForTexture(texture: MTLTexture) -> (MTLRenderPassDescriptor){
+        
+        struct StaticRenderPassDescriptor{
+            static let instance = MTLRenderPassDescriptor()
+        }
+        
+        let renderPassDescriptor = StaticRenderPassDescriptor.instance
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.Clear
+        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0,
+            green: 0.0,
+            blue: 0.0,
+            alpha: 1.0)
+        renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.Store
+        
+        return renderPassDescriptor
+    }
+    
     func render(){
         
-        unowned let unownedSelf = self
-        renderQueue.addOperationWithBlock({ () -> Void in
-            let drawable = unownedSelf.metalLayer.nextDrawable()
+        dispatch_semaphore_wait(self.avaliableUniformBuffers, DISPATCH_TIME_FOREVER)
+
+        renderQueue.addOperationWithBlock({
+            [unowned self] in
             
-            let renderPassDescriptor = MTLRenderPassDescriptor()
-            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
-            renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadAction.Clear
-            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.0,
-                green: 0.0,
-                blue: 0.0,
-                alpha: 1.0)
-            renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreAction.Store
+            while(self.currentDrawable == nil){
+                self.currentDrawable = self.metalLayer.nextDrawable()
+            }
             
-            dispatch_semaphore_wait(unownedSelf.avaliableUniformBuffers, DISPATCH_TIME_FOREVER)
-            let commandBuffer = unownedSelf.commandQueue?.commandBuffer()
+            let renderPassDescriptor = self.renderPassDescriptionForTexture(self.currentDrawable!.texture)
+            
+            let commandBuffer = self.commandQueue?.commandBuffer()
+        
             commandBuffer?.addCompletedHandler({ (MTLCommandBuffer) -> Void in
                 // Find a more elegant way to do this
-                var q = dispatch_semaphore_signal(unownedSelf.avaliableUniformBuffers)
+                var q = dispatch_semaphore_signal(self.avaliableUniformBuffers)
             })
             
             let commandEncoder = commandBuffer?.renderCommandEncoderWithDescriptor(renderPassDescriptor)
-            commandEncoder?.setRenderPipelineState(unownedSelf.pipelineState!)
-            commandEncoder?.setVertexBuffer(unownedSelf.vertexBuffer, offset: 0, atIndex: 0)
-            commandEncoder?.setVertexBuffer(unownedSelf.colorBuffer, offset: 0, atIndex: 1)
-            commandEncoder?.setVertexBuffer(unownedSelf.projectionBuffer, offset: 0, atIndex: 2)
+            commandEncoder?.setRenderPipelineState(self.pipelineState!)
+            commandEncoder?.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
+            commandEncoder?.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
+            commandEncoder?.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
             commandEncoder?.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
             commandEncoder?.endEncoding()
-            commandBuffer?.presentDrawable(drawable)
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+            commandBuffer?.presentDrawable(self.currentDrawable!)
+            NSOperationQueue.mainQueue().addOperationWithBlock({
         
                 commandBuffer!.commit()
+                self.currentDrawable = nil;
             })
-                
+            
         })
         
         
