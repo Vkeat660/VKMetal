@@ -8,6 +8,7 @@
 
 import UIKit
 import Metal
+import simd
 import QuartzCore
 
 class MainViewController: UIViewController {
@@ -148,32 +149,47 @@ class MainViewController: UIViewController {
         renderQueue.addOperationWithBlock({
             [unowned self] in
             
-            while(self.currentDrawable == nil){
+            if(self.currentDrawable == nil){
                 self.currentDrawable = self.metalLayer.nextDrawable()
             }
             
-            let renderPassDescriptor = self.renderPassDescriptionForTexture(self.currentDrawable!.texture)
-            
-            let commandBuffer = self.commandQueue?.commandBuffer()
-        
-            commandBuffer?.addCompletedHandler({ (MTLCommandBuffer) -> Void in
-                // Find a more elegant way to do this
-                var q = dispatch_semaphore_signal(self.avaliableUniformBuffers)
-            })
-            
-            let commandEncoder = commandBuffer?.renderCommandEncoderWithDescriptor(renderPassDescriptor)
-            commandEncoder?.setRenderPipelineState(self.pipelineState!)
-            commandEncoder?.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
-            commandEncoder?.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
-            commandEncoder?.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
-            commandEncoder?.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
-            commandEncoder?.endEncoding()
-            commandBuffer?.presentDrawable(self.currentDrawable!)
-            NSOperationQueue.mainQueue().addOperationWithBlock({
-        
-                commandBuffer!.commit()
-                self.currentDrawable = nil;
-            })
+            if let drawable = self.currentDrawable {
+                
+                let renderPassDescriptor = self.renderPassDescriptionForTexture(drawable.texture)
+                
+                if let commandBuffer = self.commandQueue?.commandBuffer(){
+                
+                    commandBuffer.addCompletedHandler({ (MTLCommandBuffer) -> Void in
+                        // Find a more elegant way to do this
+                        var q = dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                    })
+                    
+                    if let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor){
+                        commandEncoder.setRenderPipelineState(self.pipelineState!)
+                        commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
+                        commandEncoder.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
+                        commandEncoder.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
+                        commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+                        commandEncoder.endEncoding()
+                    }
+                    commandBuffer.presentDrawable(drawable)
+                    NSOperationQueue.mainQueue().addOperationWithBlock({
+                        
+                        commandBuffer.commit()
+                        self.currentDrawable = nil;
+                    })
+                } else {
+                    
+                    dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                }
+                
+            } else {
+                
+                NSLog(">> ERROR: Failed to get a drawable!")
+                dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                
+            }
+           
             
         })
         
