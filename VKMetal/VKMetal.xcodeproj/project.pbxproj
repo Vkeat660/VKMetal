@@ -11,8 +11,10 @@
 		3E4560AC19F380C30013921F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3E4560AB19F380C30013921F /* Images.xcassets */; };
 		3E4560AF19F380C30013921F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3E4560AD19F380C30013921F /* LaunchScreen.xib */; };
 		3E4560BB19F380C30013921F /* VKMetalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560BA19F380C30013921F /* VKMetalTests.swift */; };
-		3E4560C619F381000013921F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C419F381000013921F /* MainViewController.swift */; };
+		3E4560C619F381000013921F /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C419F381000013921F /* MetalViewController.swift */; };
 		3E4560C719F381000013921F /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C519F381000013921F /* Shader.metal */; };
+		3EACEE841A550DC300059C9E /* BaseEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EACEE831A550DC300059C9E /* BaseEffect.swift */; };
+		3EACEE8A1A55112D00059C9E /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EACEE891A55112D00059C9E /* MetalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,8 +36,10 @@
 		3E4560B419F380C30013921F /* VKMetalTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VKMetalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3E4560B919F380C30013921F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3E4560BA19F380C30013921F /* VKMetalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKMetalTests.swift; sourceTree = "<group>"; };
-		3E4560C419F381000013921F /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		3E4560C419F381000013921F /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalViewController.swift; sourceTree = "<group>"; };
 		3E4560C519F381000013921F /* Shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		3EACEE831A550DC300059C9E /* BaseEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEffect.swift; sourceTree = "<group>"; };
+		3EACEE891A55112D00059C9E /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +82,9 @@
 			isa = PBXGroup;
 			children = (
 				3E4560A219F380C30013921F /* AppDelegate.swift */,
-				3E4560C419F381000013921F /* MainViewController.swift */,
+				3E4560C419F381000013921F /* MetalViewController.swift */,
+				3EACEE891A55112D00059C9E /* MetalView.swift */,
+				3EACEE831A550DC300059C9E /* BaseEffect.swift */,
 				3E4560C519F381000013921F /* Shader.metal */,
 				3E4560AB19F380C30013921F /* Images.xcassets */,
 				3E4560AD19F380C30013921F /* LaunchScreen.xib */,
@@ -161,6 +167,7 @@
 				TargetAttributes = {
 					3E45609C19F380C30013921F = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = R9JCR2GDF8;
 					};
 					3E4560B319F380C30013921F = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -213,7 +220,9 @@
 			files = (
 				3E4560C719F381000013921F /* Shader.metal in Sources */,
 				3E4560A319F380C30013921F /* AppDelegate.swift in Sources */,
-				3E4560C619F381000013921F /* MainViewController.swift in Sources */,
+				3EACEE8A1A55112D00059C9E /* MetalView.swift in Sources */,
+				3E4560C619F381000013921F /* MetalViewController.swift in Sources */,
+				3EACEE841A550DC300059C9E /* BaseEffect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,9 +339,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = VKMetal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -340,9 +352,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = VKMetal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

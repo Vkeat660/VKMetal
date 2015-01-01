@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        window.rootViewController = MainViewController()
+        window.rootViewController = MetalViewController.sharedInstance
         window.makeKeyAndVisible()
 
         return true

@@ -11,10 +11,10 @@ import Metal
 import simd
 import QuartzCore
 
-class MainViewController: UIViewController {
+class MetalViewController: UIViewController {
     
     let device = MTLCreateSystemDefaultDevice()
-    let metalLayer = CAMetalLayer()
+    let metalView = MetalView()
     
     var vertexBuffer        : MTLBuffer?
     var colorBuffer         : MTLBuffer?
@@ -40,12 +40,22 @@ class MainViewController: UIViewController {
     
     var projectionData : [Float]?
     
+    class var sharedInstance : MetalViewController {
+        struct Static {
+            static let instance = MetalViewController()
+        }
+        return Static.instance
+    }
+
     override func viewDidLoad() {
         
         super.viewDidLoad()
         view.backgroundColor = UIColor.magentaColor()
         
-        setupMetalLayer()
+        metalView.frame = view.frame
+        view.addSubview(metalView)
+        metalView.prepareForDrawing()
+        
         setupPerspective()
         setupBuffers()
         setupPipeline()
@@ -54,26 +64,6 @@ class MainViewController: UIViewController {
         displayLink = CADisplayLink(target: self, selector: Selector("update"))
         displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
         avaliableUniformBuffers = dispatch_semaphore_create(3)
-        
-    }
-    
-    func setupMetalLayer() {
-        
-        metalLayer.device          = device
-        metalLayer.pixelFormat     = .BGRA8Unorm
-        metalLayer.frame           = view.layer.frame
-        metalLayer.framebufferOnly = true
-        
-        // These two lines set the number of pixels that the layer will render
-        let contentScale = UIScreen.mainScreen().scale
-        metalLayer.drawableSize = CGSize(width: view.bounds.size.width * contentScale,
-            height: view.bounds.size.height * contentScale)
-        
-        // For performance
-        metalLayer.drawsAsynchronously = true;
-        
-        view.layer.addSublayer(metalLayer)
-        view.opaque = true
         
     }
     
@@ -124,7 +114,9 @@ class MainViewController: UIViewController {
         }
     }
     
-    func renderPassDescriptionForTexture(texture: MTLTexture) -> (MTLRenderPassDescriptor){
+    let renderPassDescriptorForTexture : (MTLTexture) -> (MTLRenderPassDescriptor) = {
+        
+        texture in
         
         struct StaticRenderPassDescriptor{
             static let instance = MTLRenderPassDescriptor()
@@ -150,16 +142,16 @@ class MainViewController: UIViewController {
             [unowned self] in
             
             if(self.currentDrawable == nil){
-                self.currentDrawable = self.metalLayer.nextDrawable()
+                self.currentDrawable = self.metalView.metalLayer.nextDrawable()
             }
             
             if let drawable = self.currentDrawable {
                 
-                let renderPassDescriptor = self.renderPassDescriptionForTexture(drawable.texture)
+                let renderPassDescriptor = self.renderPassDescriptorForTexture(drawable.texture)
                 
                 if let commandBuffer = self.commandQueue?.commandBuffer(){
                 
-                    commandBuffer.addCompletedHandler({ (MTLCommandBuffer) -> Void in
+                    commandBuffer.addCompletedHandler({ (MTLCommandBuffer) -> () in
                         // Find a more elegant way to do this
                         var q = dispatch_semaphore_signal(self.avaliableUniformBuffers)
                     })
