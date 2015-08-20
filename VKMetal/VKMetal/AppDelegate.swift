@@ -11,15 +11,16 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var window: UIWindow?
     
-    let window = UIWindow(frame: UIScreen.mainScreen().bounds)
-
-
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        window.rootViewController = MetalViewController.sharedInstance
-        window.makeKeyAndVisible()
-
+        window = UIWindow()
+        window?.frame = UIScreen.mainScreen().bounds
+        window?.rootViewController = MetalViewController.sharedInstance
+        window?.makeKeyAndVisible()
+        
         return true
     }
 

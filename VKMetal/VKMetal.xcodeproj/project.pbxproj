@@ -162,6 +162,7 @@
 		3E45609519F380C30013921F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = "Vivian Keating";
 				TargetAttributes = {
@@ -414,6 +415,7 @@
 				3E4560C019F380C30013921F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3E4560C119F380C30013921F /* Build configuration list for PBXNativeTarget "VKMetalTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +424,7 @@
 				3E4560C319F380C30013921F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
