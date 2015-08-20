@@ -13,7 +13,7 @@ import QuartzCore
 
 class MetalViewController: UIViewController {
     
-    let device = MTLCreateSystemDefaultDevice()
+    let device = MTLCreateSystemDefaultDevice()!
     let metalView = MetalView()
     
     var vertexBuffer        : MTLBuffer?
@@ -30,11 +30,11 @@ class MetalViewController: UIViewController {
     
     let renderQueue = NSOperationQueue()
     
-    let vertexData : [Float] = [ 0.0,  0.6, -4.0,
+    var vertexData : [Float] = [ 0.0,  0.6, -4.0,
                                 -0.6, -0.6, -4.0,
                                  0.6, -0.6, -4.0]
     
-    let colorData  : [Float] = [ 0.0, 0.0, 1.0, 1.0,
+    var colorData  : [Float] = [ 0.0, 0.0, 1.0, 1.0,
                                  0.0, 1.0, 0.0, 1.0,
                                  1.0, 0.0, 0.0, 1.0]
     
@@ -90,9 +90,9 @@ class MetalViewController: UIViewController {
         let bufferSize      = vertexData.count * sizeofValue(vertexData[0])
         let colorBufferSize = colorData.count * sizeofValue(colorData[0])
         let projBufferSize  = projectionData!.count * sizeofValue(projectionData![0])
-        vertexBuffer    = device.newBufferWithBytes(vertexData, length: bufferSize, options:nil)
-        colorBuffer    = device.newBufferWithBytes(colorData, length: colorBufferSize, options:nil)
-        projectionBuffer    = device.newBufferWithBytes(projectionData!, length: projBufferSize, options: nil)
+        vertexBuffer    = device.newBufferWithBytes(&vertexData, length: bufferSize, options:MTLResourceOptions.CPUCacheModeDefaultCache)
+        colorBuffer    = device.newBufferWithBytes(&colorData, length: colorBufferSize, options:MTLResourceOptions.CPUCacheModeDefaultCache)
+        projectionBuffer    = device.newBufferWithBytes(&projectionData!, length: projBufferSize, options: MTLResourceOptions.CPUCacheModeDefaultCache)
         
     }
     
@@ -107,10 +107,11 @@ class MetalViewController: UIViewController {
         pipelineStateDescriptor.fragmentFunction = fragmentProgram
         pipelineStateDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormat.BGRA8Unorm
         
-        var pipelineError : NSError?
-        pipelineState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error:&pipelineError)
-        if pipelineState == nil {
-            println("Failed to create renderPipelineState, with error \(pipelineError)")
+        do{
+            try pipelineState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor)
+
+        } catch {
+            print("error: \(error)")
         }
     }
     
@@ -136,7 +137,7 @@ class MetalViewController: UIViewController {
     
     func render(){
         
-        dispatch_semaphore_wait(self.avaliableUniformBuffers, DISPATCH_TIME_FOREVER)
+        dispatch_semaphore_wait(avaliableUniformBuffers!, DISPATCH_TIME_FOREVER)
 
         renderQueue.addOperationWithBlock({
             [unowned self] in
@@ -153,17 +154,17 @@ class MetalViewController: UIViewController {
                 
                     commandBuffer.addCompletedHandler({ (MTLCommandBuffer) -> () in
                         // Find a more elegant way to do this
-                        var q = dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                        dispatch_semaphore_signal(self.avaliableUniformBuffers!)
                     })
                     
-                    if let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor){
-                        commandEncoder.setRenderPipelineState(self.pipelineState!)
-                        commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
-                        commandEncoder.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
-                        commandEncoder.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
-                        commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
-                        commandEncoder.endEncoding()
-                    }
+                    let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
+                    commandEncoder.setRenderPipelineState(self.pipelineState!)
+                    commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
+                    commandEncoder.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
+                    commandEncoder.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
+                    commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+                    commandEncoder.endEncoding()
+                    
                     commandBuffer.presentDrawable(drawable)
                     NSOperationQueue.mainQueue().addOperationWithBlock({
                         
@@ -172,13 +173,13 @@ class MetalViewController: UIViewController {
                     })
                 } else {
                     
-                    dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                    dispatch_semaphore_signal(self.avaliableUniformBuffers!)
                 }
                 
             } else {
                 
                 NSLog(">> ERROR: Failed to get a drawable!")
-                dispatch_semaphore_signal(self.avaliableUniformBuffers)
+                dispatch_semaphore_signal(self.avaliableUniformBuffers!)
                 
             }
            
