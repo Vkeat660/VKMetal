@@ -26,7 +26,6 @@ class MetalViewController: UIViewController {
     var commandQueue : MTLCommandQueue?
     
     var displayLink : CADisplayLink?
-    var avaliableUniformBuffers: dispatch_semaphore_t?
     
     let renderQueue = NSOperationQueue()
     
@@ -63,7 +62,6 @@ class MetalViewController: UIViewController {
         commandQueue = device.newCommandQueue()
         displayLink = CADisplayLink(target: self, selector: Selector("update"))
         displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
-        avaliableUniformBuffers = dispatch_semaphore_create(3)
         
     }
     
@@ -137,56 +135,32 @@ class MetalViewController: UIViewController {
     
     func render(){
         
-        dispatch_semaphore_wait(avaliableUniformBuffers!, DISPATCH_TIME_FOREVER)
-
-        renderQueue.addOperationWithBlock({
-            [unowned self] in
             
-            if(self.currentDrawable == nil){
-                self.currentDrawable = self.metalView.metalLayer.nextDrawable()
+        if(self.currentDrawable == nil){
+            currentDrawable = metalView.metalLayer.nextDrawable()
+        }
+        
+        if let drawable = currentDrawable {
+            
+            let renderPassDescriptor = renderPassDescriptorForTexture(drawable.texture)
+            
+            if let commandBuffer = commandQueue?.commandBuffer(){
+                
+                let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
+                commandEncoder.setRenderPipelineState(pipelineState!)
+                commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, atIndex: 0)
+                commandEncoder.setVertexBuffer(colorBuffer, offset: 0, atIndex: 1)
+                commandEncoder.setVertexBuffer(projectionBuffer, offset: 0, atIndex: 2)
+                commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+                commandEncoder.endEncoding()
+                
+                commandBuffer.presentDrawable(drawable)
+                    
+                commandBuffer.commit()
+                currentDrawable = nil
             }
             
-            if let drawable = self.currentDrawable {
-                
-                let renderPassDescriptor = self.renderPassDescriptorForTexture(drawable.texture)
-                
-                if let commandBuffer = self.commandQueue?.commandBuffer(){
-                
-                    commandBuffer.addCompletedHandler({ (MTLCommandBuffer) -> () in
-                        // Find a more elegant way to do this
-                        dispatch_semaphore_signal(self.avaliableUniformBuffers!)
-                    })
-                    
-                    let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
-                    commandEncoder.setRenderPipelineState(self.pipelineState!)
-                    commandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, atIndex: 0)
-                    commandEncoder.setVertexBuffer(self.colorBuffer, offset: 0, atIndex: 1)
-                    commandEncoder.setVertexBuffer(self.projectionBuffer, offset: 0, atIndex: 2)
-                    commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
-                    commandEncoder.endEncoding()
-                    
-                    commandBuffer.presentDrawable(drawable)
-                    NSOperationQueue.mainQueue().addOperationWithBlock({
-                        
-                        commandBuffer.commit()
-                        self.currentDrawable = nil;
-                    })
-                } else {
-                    
-                    dispatch_semaphore_signal(self.avaliableUniformBuffers!)
-                }
-                
-            } else {
-                
-                NSLog(">> ERROR: Failed to get a drawable!")
-                dispatch_semaphore_signal(self.avaliableUniformBuffers!)
-                
-            }
-           
-            
-        })
-        
-        
+    }
     }
     
     func update(){
