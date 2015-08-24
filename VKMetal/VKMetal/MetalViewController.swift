@@ -13,7 +13,7 @@ import QuartzCore
 import MetalKit
 
 @available(iOS 9.0, *)
-class MetalViewController: UIViewController {
+class MetalViewController: UIViewController, MTKViewDelegate {
     
     let device = MTLCreateSystemDefaultDevice()!
     let metalView = MTKView()
@@ -29,7 +29,6 @@ class MetalViewController: UIViewController {
     var pipelineState : MTLRenderPipelineState?
     var commandQueue : MTLCommandQueue?
     
-    var displayLink : CADisplayLink?
     
     let renderQueue = NSOperationQueue()
     
@@ -70,7 +69,7 @@ class MetalViewController: UIViewController {
         
         metalView.frame = view.frame
         view.addSubview(metalView)
-        //metalView.delegate = self
+        metalView.delegate = self
         metalView.device = device
         //metalView.sampleCount = 4
         //metalView.depthStencilPixelFormat = MTLPixelFormat.BGRA8Unorm
@@ -82,8 +81,6 @@ class MetalViewController: UIViewController {
         
         defaultLibrary = device.newDefaultLibrary()
         commandQueue = device.newCommandQueue()
-        displayLink = CADisplayLink(target: self, selector: Selector("update"))
-        displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
         
     }
     
@@ -155,7 +152,11 @@ class MetalViewController: UIViewController {
         return renderPassDescriptor
     }
     
-    func render(){
+    
+    func drawInMTKView(view: MTKView){
+        
+        // Perofm any app logic, including updating any Metal buffers.
+        update()
         
         if let renderPassDescriptor = metalView.currentRenderPassDescriptor {
             
@@ -177,22 +178,24 @@ class MetalViewController: UIViewController {
                 currentDrawable = nil
             }
         }
-            
+    }
+    
+    func mtkView(view: MTKView, drawableSizeWillChange size: CGSize){
+        /*
+        float aspect = fabs(self.view.bounds.size.width / self.view.bounds.size.height);
+        _projectionMatrix = matrix_from_perspective_fov_aspectLH(65.0f * (M_PI / 180.0f), aspect, 0.1f, 100.0f);
+        
+        _viewMatrix = matrix_identity_float4x4;*/
     }
     
     func update(){
-        render()
+        
+        // Perofm any app logic, including updating any Metal buffers.
     }
     
     
     override func prefersStatusBarHidden() -> Bool {
         return true
-    }
-    
-    deinit {
-        
-        displayLink?.invalidate()
-        
     }
     
 }
