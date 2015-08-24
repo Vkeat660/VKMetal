@@ -10,11 +10,15 @@ import UIKit
 import Metal
 import simd
 import QuartzCore
+import MetalKit
 
+@available(iOS 9.0, *)
 class MetalViewController: UIViewController {
     
     let device = MTLCreateSystemDefaultDevice()!
-    let metalView = MetalView()
+    let metalView = MTKView()
+    
+    var defaultLibrary : MTLLibrary?
     
     var vertexBuffer        : MTLBuffer?
     var colorBuffer         : MTLBuffer?
@@ -51,14 +55,32 @@ class MetalViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.magentaColor()
         
-        metalView.frame = view.frame
-        view.addSubview(metalView)
-        metalView.prepareForDrawing()
+        setupMetal()
+        setupMetalView()
+        
         
         setupPerspective()
         setupBuffers()
         setupPipeline()
         
+        
+    }
+    
+    func setupMetalView(){
+        
+        metalView.frame = view.frame
+        view.addSubview(metalView)
+        //metalView.delegate = self
+        metalView.device = device
+        //metalView.sampleCount = 4
+        //metalView.depthStencilPixelFormat = MTLPixelFormat.BGRA8Unorm
+        metalView.framebufferOnly = true
+        
+    }
+    
+    func setupMetal() {
+        
+        defaultLibrary = device.newDefaultLibrary()
         commandQueue = device.newCommandQueue()
         displayLink = CADisplayLink(target: self, selector: Selector("update"))
         displayLink?.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSRunLoopCommonModes)
@@ -135,14 +157,9 @@ class MetalViewController: UIViewController {
     
     func render(){
         
+        if let renderPassDescriptor = metalView.currentRenderPassDescriptor {
             
-        if(self.currentDrawable == nil){
-            currentDrawable = metalView.metalLayer.nextDrawable()
-        }
-        
-        if let drawable = currentDrawable {
             
-            let renderPassDescriptor = renderPassDescriptorForTexture(drawable.texture)
             
             if let commandBuffer = commandQueue?.commandBuffer(){
                 
@@ -154,13 +171,13 @@ class MetalViewController: UIViewController {
                 commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
                 commandEncoder.endEncoding()
                 
-                commandBuffer.presentDrawable(drawable)
+                commandBuffer.presentDrawable(metalView.currentDrawable!)
                     
                 commandBuffer.commit()
                 currentDrawable = nil
             }
+        }
             
-    }
     }
     
     func update(){

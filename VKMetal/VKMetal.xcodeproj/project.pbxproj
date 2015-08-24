@@ -14,7 +14,6 @@
 		3E4560C619F381000013921F /* MetalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C419F381000013921F /* MetalViewController.swift */; };
 		3E4560C719F381000013921F /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 3E4560C519F381000013921F /* Shader.metal */; };
 		3EACEE841A550DC300059C9E /* BaseEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EACEE831A550DC300059C9E /* BaseEffect.swift */; };
-		3EACEE8A1A55112D00059C9E /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EACEE891A55112D00059C9E /* MetalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +38,6 @@
 		3E4560C419F381000013921F /* MetalViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalViewController.swift; sourceTree = "<group>"; };
 		3E4560C519F381000013921F /* Shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		3EACEE831A550DC300059C9E /* BaseEffect.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseEffect.swift; sourceTree = "<group>"; };
-		3EACEE891A55112D00059C9E /* MetalView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +81,6 @@
 			children = (
 				3E4560A219F380C30013921F /* AppDelegate.swift */,
 				3E4560C419F381000013921F /* MetalViewController.swift */,
-				3EACEE891A55112D00059C9E /* MetalView.swift */,
 				3EACEE831A550DC300059C9E /* BaseEffect.swift */,
 				3E4560C519F381000013921F /* Shader.metal */,
 				3E4560AB19F380C30013921F /* Images.xcassets */,
@@ -221,7 +218,6 @@
 			files = (
 				3E4560C719F381000013921F /* Shader.metal in Sources */,
 				3E4560A319F380C30013921F /* AppDelegate.swift in Sources */,
-				3EACEE8A1A55112D00059C9E /* MetalView.swift in Sources */,
 				3E4560C619F381000013921F /* MetalViewController.swift in Sources */,
 				3EACEE841A550DC300059C9E /* BaseEffect.swift in Sources */,
 			);
