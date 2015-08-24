@@ -12,6 +12,8 @@ import simd
 import QuartzCore
 import MetalKit
 
+let inflightBuffers = 3
+
 @available(iOS 9.0, *)
 class MetalViewController: UIViewController, MTKViewDelegate {
     
@@ -42,6 +44,9 @@ class MetalViewController: UIViewController, MTKViewDelegate {
     
     var projectionData : [Float]?
     
+    
+    var inflightSemaphore : dispatch_semaphore_t = dispatch_semaphore_create(inflightBuffers)
+    
     class var sharedInstance : MetalViewController {
         struct Static {
             static let instance = MetalViewController()
@@ -54,9 +59,9 @@ class MetalViewController: UIViewController, MTKViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = UIColor.magentaColor()
         
+        
         setupMetal()
         setupMetalView()
-        
         
         setupPerspective()
         setupBuffers()
@@ -155,7 +160,9 @@ class MetalViewController: UIViewController, MTKViewDelegate {
     
     func drawInMTKView(view: MTKView){
         
-        // Perofm any app logic, including updating any Metal buffers.
+        dispatch_semaphore_wait(inflightSemaphore, DISPATCH_TIME_FOREVER)
+        
+        // Perform any app logic, including updating any Metal buffers.
         update()
         
         if let renderPassDescriptor = metalView.currentRenderPassDescriptor {
@@ -171,6 +178,18 @@ class MetalViewController: UIViewController, MTKViewDelegate {
                 commandEncoder.setVertexBuffer(projectionBuffer, offset: 0, atIndex: 2)
                 commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
                 commandEncoder.endEncoding()
+                
+                
+                commandBuffer.addCompletedHandler(){ (MTLCommandBuffer) -> () in
+                    
+                    dispatch_semaphore_signal(inflightSemaphore)
+                }
+                
+                /*
+                __block dispatch_semaphore_t block_sema = _inflightSemaphore;
+                [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
+                    dispatch_semaphore_signal(block_sema);
+                    }];*/
                 
                 commandBuffer.presentDrawable(metalView.currentDrawable!)
                     
@@ -190,7 +209,7 @@ class MetalViewController: UIViewController, MTKViewDelegate {
     
     func update(){
         
-        // Perofm any app logic, including updating any Metal buffers.
+        // Perform any app logic, including updating any Metal buffers.
     }
     
     
