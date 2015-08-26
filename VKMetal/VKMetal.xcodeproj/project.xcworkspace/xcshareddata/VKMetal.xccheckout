@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>BC700470-D5EC-403E-8725-2F0B8EB2F785</string>
 	<key>IDESourceControlProjectName</key>
-	<string>VKMetal</string>
+	<string>project</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>C3ED0EAF3C31C62E7ACD369DA249749D6443FFC9</key>
 		<string>https://github.com/Vkeat660/VKMetal.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>VKMetal/VKMetal.xcodeproj</string>
+	<string>VKMetal/VKMetal.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>C3ED0EAF3C31C62E7ACD369DA249749D6443FFC9</key>

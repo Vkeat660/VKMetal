@@ -20,6 +20,8 @@ class MetalViewController: UIViewController, MTKViewDelegate {
     let device = MTLCreateSystemDefaultDevice()!
     let metalView = MTKView()
     
+    let constantBufferIndex : UInt8 = 0
+    //let frameUniformBuffers : [MTLBuffer] =
     var defaultLibrary : MTLLibrary?
     
     var vertexBuffer        : MTLBuffer?
@@ -171,7 +173,14 @@ class MetalViewController: UIViewController, MTKViewDelegate {
             
             if let commandBuffer = commandQueue?.commandBuffer(){
                 
+                
+                commandBuffer.addCompletedHandler(){ (MTLCommandBuffer) -> () in
+                    
+                    dispatch_semaphore_signal(inflightSemaphore)
+                }
+                
                 let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
+                
                 commandEncoder.setRenderPipelineState(pipelineState!)
                 commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, atIndex: 0)
                 commandEncoder.setVertexBuffer(colorBuffer, offset: 0, atIndex: 1)
@@ -179,22 +188,9 @@ class MetalViewController: UIViewController, MTKViewDelegate {
                 commandEncoder.drawPrimitives(MTLPrimitiveType.Triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
                 commandEncoder.endEncoding()
                 
-                
-                commandBuffer.addCompletedHandler(){ (MTLCommandBuffer) -> () in
-                    
-                    dispatch_semaphore_signal(inflightSemaphore)
-                }
-                
-                /*
-                __block dispatch_semaphore_t block_sema = _inflightSemaphore;
-                [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer> buffer) {
-                    dispatch_semaphore_signal(block_sema);
-                    }];*/
-                
                 commandBuffer.presentDrawable(metalView.currentDrawable!)
                     
                 commandBuffer.commit()
-                currentDrawable = nil
             }
         }
     }
